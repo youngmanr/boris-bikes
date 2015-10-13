@@ -5,3 +5,5 @@ Create a directory from the command line
  Add the README.md to the staging area
  Commit your changes with a clear message
  Push the project to Github.
+
+ jamie was her
