@@ -5,6 +5,11 @@ describe DockingStation do
       expect(subject).to respond_to :release_bike
   end
 
+  it 'expects a released bike to be a bike' do
+    subject.dock(Bike.new)
+    expect(subject.release_bike).to be_instance_of Bike
+  end
+
   it 'expects released bike to be a working bike' do
     subject.dock(Bike.new)
     bike = subject.release_bike
@@ -23,10 +28,10 @@ describe DockingStation do
   it 'returns bike when asked' do
     bike = Bike.new
     subject.dock(bike)
-    expect(subject.bike).to eq bike
+    expect(subject.bikes).to be_instance_of Array
   end
   it 'raises an error when trying to dock more bikes than max capacity' do
-    subject.dock(Bike.new)
+    20.times{subject.dock(Bike.new)}
     expect { subject.dock(Bike.new) }.to raise_error "Dock is full"
   end
   it 'raises an error when we try to release a bike from an empty docking station' do
