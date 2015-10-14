@@ -31,7 +31,7 @@ describe DockingStation do
     expect(subject.bikes).to be_instance_of Array
   end
   it 'raises an error when trying to dock more bikes than max capacity' do
-    20.times{subject.dock(Bike.new)}
+    DockingStation::DEFAULT_CAPACITY.times{subject.dock(Bike.new)}
     expect { subject.dock(Bike.new) }.to raise_error "Dock is full"
   end
   it 'raises an error when we try to release a bike from an empty docking station' do
