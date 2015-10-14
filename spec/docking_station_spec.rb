@@ -30,11 +30,25 @@ describe DockingStation do
     subject.dock(bike)
     expect(subject.bikes).to be_instance_of Array
   end
-  it 'raises an error when trying to dock more bikes than max capacity' do
+  it 'raises an error when trying to dock more bikes than max default capacity' do
     DockingStation::DEFAULT_CAPACITY.times{subject.dock(Bike.new)}
     expect { subject.dock(Bike.new) }.to raise_error "Dock is full"
+  end
+  it 'raises an error when trying to dock more bikes than the configured capacity' do
+    capacity = 15
+    docking_station = DockingStation.new(capacity)
+    capacity.times {docking_station.dock(Bike.new)}
+    expect(docking_station.capacity).to eq capacity
+    expect { docking_station.dock(Bike.new)}.to raise_error "Dock is full"
   end
   it 'raises an error when we try to release a bike from an empty docking station' do
     expect { subject.release_bike }.to raise_error "No bike available"
   end
+    it 'returns a capacity other the default value when a capacity is given on initialisation' do
+    expect(DockingStation.new(15).capacity).to eq 15
+  end
+  it 'returns a default capacity when a value for capacity is not given on instantiation' do
+    expect(DockingStation.new().capacity).to eq DockingStation::DEFAULT_CAPACITY
+  end
+
 end
