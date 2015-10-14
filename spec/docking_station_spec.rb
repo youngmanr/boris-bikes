@@ -41,6 +41,11 @@ describe DockingStation do
     expect(docking_station.capacity).to eq capacity
     expect { docking_station.dock(Bike.new)}.to raise_error "Dock is full"
   end
+
+  it 'updates bike when reported as broken' do
+    expect(subject.dock(Bike.new, false)).not_to be_working
+  end
+
   it 'raises an error when we try to release a bike from an empty docking station' do
     expect { subject.release_bike }.to raise_error "No bike available"
   end
