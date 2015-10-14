@@ -1,19 +1,31 @@
 require 'docking_station'
 
 describe DockingStation do
-  it 'expects DockingStation to respond to method release_bike' do
+  context 'Releasing bikes' do
+    it 'expects DockingStation to respond to method release_bike' do
       expect(subject).to respond_to :release_bike
-  end
+    end
 
-  it 'expects a released bike to be a bike' do
-    subject.dock(Bike.new)
-    expect(subject.release_bike).to be_instance_of Bike
-  end
+    it 'expects a released bike to be a bike' do
+      subject.dock(Bike.new)
+      expect(subject.release_bike).to be_instance_of Bike
+    end
 
-  it 'expects released bike to be a working bike' do
-    subject.dock(Bike.new)
-    bike = subject.release_bike
-    expect(bike).to be_working
+    it 'expects released bike to be a working bike' do
+      subject.dock(Bike.new)
+      bike = subject.release_bike
+      expect(bike).to be_working
+    end
+
+    it 'raises an error if no unbroken bikes are available' do
+      5.times {subject.dock(Bike.new, false) }
+      expect { subject.release_bike}.to raise_error 'No bike available'
+    end
+    it 'finds an unbroken bike when all but one are broken' do
+      5.times {subject.dock(Bike.new, false) }
+      subject.dock(Bike.new)
+      expect(subject.release_bike).to be_working
+    end
   end
 
   it 'expects DockingStation to respond to method dock with one argument' do
@@ -49,7 +61,7 @@ describe DockingStation do
   it 'raises an error when we try to release a bike from an empty docking station' do
     expect { subject.release_bike }.to raise_error "No bike available"
   end
-    it 'returns a capacity other the default value when a capacity is given on initialisation' do
+  it 'returns a capacity other the default value when a capacity is given on initialisation' do
     expect(DockingStation.new(15).capacity).to eq 15
   end
   it 'returns a default capacity when a value for capacity is not given on instantiation' do
